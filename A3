@@ -1,0 +1,260 @@
+#include <iostream>
+
+using namespace std;
+
+struct node
+{
+    int data;
+    node *l;
+    node *r;
+};
+
+class bina_root
+{
+public:
+    node *root, *tem;
+    int count, key;
+
+    bina_root()
+    {
+        root = NULL;
+        count = 0;
+    }
+
+    void insert(node *, node *);
+    void create();
+    void disin(node *);
+    void dispre(node *);
+    void dispost(node *);
+    void display();
+    void min(node *);
+    int height(node *);
+    void search(node *);
+    void mirror(node *);
+};
+void bina_root ::insert(node *root, node *temp)
+{
+    if (tem->data > root->data)
+    {
+        if (root->r == NULL)
+        {
+            root->r = tem;
+        }
+        else
+        {
+            insert(root->r, tem);
+        }
+    }
+
+    else
+    {
+        if (root->l == NULL)
+        {
+            root->l = tem;
+        }
+        else
+        {
+            insert(root->l, tem);
+        }
+    }
+}
+void bina_root ::create()
+{
+    char ans;
+    do
+    {
+        tem = new node;
+        cout << "\n Enter the data  : ";
+        cin >> tem->data;
+        tem->l = NULL;
+        tem->r = NULL;
+        if (root == NULL)
+        {
+            root = tem;
+        }
+        else
+        {
+            insert(root, tem);
+        }
+        cout << "\n ..............Do you want more enteries ";
+        cin >> ans;
+        count++;
+    } while (ans == 'y' || ans == 'Y');
+    cout << "\n\n Total no of node are:" << count;
+}
+
+void bina_root ::disin(node *root)
+{
+    if (root != NULL)
+    {
+        disin(root->l);
+        cout << root->data << "\t";
+        disin(root->r);
+    }
+}
+
+void bina_root ::dispre(node *root)
+{
+    if (root != NULL)
+    {
+        cout << root->data << "\t";
+        dispre(root->l);
+        dispre(root->r);
+    }
+}
+void bina_root ::dispost(node *root)
+{
+    if (root != NULL)
+    {
+        dispost(root->l);
+        dispost(root->r);
+        cout << root->data << "\t";
+    }
+}
+
+void bina_root ::display()
+{
+    cout << endl
+         << "\n--- INORDER TRAVERSAL ---\t";
+    disin(root);
+    cout << endl;
+    cout << endl
+         << "\n--- POSTORDER TRAVERSAL ---\t";
+    dispost(root);
+    cout << endl;
+    cout << endl
+         << "\n--- PREORDER TRAVERSAL ---\t";
+    dispre(root);
+    cout << endl;
+}
+
+void bina_root ::min(node *root)
+{
+    tem = root;
+    while (tem->l != NULL)
+    {
+        tem = tem->l;
+    }
+    cout << "\n MINIMUM VALUE = " << tem->data;
+}
+
+int bina_root ::height(node *root)
+{
+    int hl, hr;
+    if (root == NULL)
+    {
+        return 0;
+    }
+    else if (root->l == NULL && root->r == NULL)
+    {
+        return 0;
+    }
+    hr = height(root->r);
+    hl = height(root->l);
+    if (hr > hl)
+    {
+        return (1 + hr);
+    }
+    else
+    {
+        return (1 + hl);
+    }
+}
+
+void bina_root ::search(node *root)
+{
+    int flag = 0;
+    int key;
+    cout << "\n Enter a key  ";
+    cin >> key;
+    tem = root;
+    while (tem != NULL)
+    {
+        if (key == tem->data)
+        {
+            cout << "\n:-- RECORD FOUND --:";
+            flag = 1;
+            break;
+        }
+        node *parent = tem;
+        if (key > parent->data)
+        {
+            tem = tem->r;
+        }
+        else
+        {
+            tem = tem->l;
+        }
+    }
+    if (flag == 0)
+    {
+        cout << "\n:-- RECORD NOT FOUND --:";
+    }
+}
+
+void bina_root ::mirror(node *temp)
+{
+    if (temp == NULL)
+    {
+        return;
+    }
+    else
+    {
+        node *ptr;
+        mirror(temp->l);
+        mirror(temp->r);
+        ptr = temp->l;
+        temp->l = temp->r;
+        temp->r = ptr;
+    }
+}
+
+int main()
+{
+    bina_root obj;
+    int key, n, a;
+    while (1)
+    {
+        cout << endl;
+        cout << "\n Enter a menu option ";
+        cout << "\n 1.insert a new node ";
+        cout << "\n 2.display ";
+        cout << "\n 3.Find height ";
+        cout << "\n 4.Minimum data value ";
+        cout << "\n 5.Mirror ";
+        cout << "\n 6.Search a value ";
+        cout << "\n 7.exit ";
+        cout << "\n Enter the choice ";
+        cin >> n;
+        cout << endl;
+        switch (n)
+        {
+        case 1:
+            obj.create();
+            break;
+        case 2:
+            obj.display();
+            break;
+        case 3:
+            a = 1 + obj.height(obj.root);
+            cout << "\n height " << a << endl;
+            break;
+        case 4:
+            obj.min(obj.root);
+            break;
+        case 5:
+            obj.mirror(obj.root);
+            obj.disin(obj.root);
+            break;
+        case 6:
+            obj.search(obj.root);
+            break;
+        case 7:
+            exit(0);
+            break;
+        default:
+            cout << "\n unknown choice";
+        }
+    }
+    return 0;
+}
