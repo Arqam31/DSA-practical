@@ -1,0 +1,272 @@
+#include <iostream>
+using namespace std;
+
+class SetADT
+{
+	int set1[10];
+	int set2[10];
+	int set3[10];
+
+public:
+	SetADT()
+
+	{
+		int i;
+		for (i = 0; i < 10; i++)
+		{
+			set1[i] = -1;
+			set2[i] = -1;
+			set3[i] = -1;
+		}
+	}
+
+	void add(int);
+	void display();
+	int find(int, int);
+	int Delete(int, int);
+	void size();
+	void intersection();
+	void Union();
+};
+
+void SetADT::add(int ch)
+{
+	int cnt = 0, i;
+	char ans;
+	do
+	{
+		if (cnt >= 10)
+		{
+			cout << "\n\tset is full";
+			break;
+		}
+		cout << "\n\tenter a element:";
+		for (i = 0; i < 10; i++)
+		{
+			if (ch == 1 && set1[i] == -1)
+			{
+				cin >> set1[i];
+				cnt++;
+				break;
+			}
+			if (ch == 2 && set2[i] == -1)
+			{
+				cin >> set2[i];
+				cnt++;
+				break;
+			}
+		}
+
+		cout << "\n\t.**do you want add more element ";
+		cin >> ans;
+	} while (ans == 'y' || ans == 'y');
+	display();
+}
+
+void SetADT::display()
+{
+	int i;
+	cout << "\n\tset 1= { ";
+	for (i = 0; i < 10; i++)
+	{
+		if (set1[i] != -1)
+		{
+			cout << set1[i] << ",";
+		}
+	}
+	cout << "\b }";
+	cout << "\n\tset2 = {";
+	for (i = 0; i < 10; i++)
+	{
+		if (set2[i] != -1)
+		{
+			cout << set2[i] << ",";
+		}
+	}
+	cout << "\b }";
+}
+
+int SetADT::find(int ch, int s)
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		if (s == 1 && set1[i] == ch)
+		{
+			return i;
+		}
+		if (s == 2 && set2[i] == ch)
+		{
+			return i;
+		}
+		}
+	return -1;
+}
+
+int SetADT::Delete(int ch, int s)
+{
+	int index = find(ch, s);
+	if (s == 1 && index != -1)
+	{
+		set1[index] = -1;
+		return index;
+	}
+	if (s == 2 && index != -1)
+	{
+		set2[index] = -1;
+		return index;
+	}
+	return index;
+}
+
+void SetADT::size()
+{
+	int cnt1 = 0, cnt2 = 0, i;
+	for (i = 0; i < 10; i++)
+	{
+		if (set1[i] != -1)
+			cnt1++;
+		if (set2[i] != -1)
+			cnt2++;
+	}
+	cout << "\n Size of set 1 is " << cnt1;
+	cout << "\n Size of set 2 is " << cnt2;
+}
+
+void SetADT::Union()
+{
+	int i, j, k = 0;
+	for (i = 0; i < 10; i++)
+	{
+		if (set1[i] != -1)
+		{
+			set3[k] = set1[i];
+			k++;
+		}
+	}
+	for (i = 0; i < 10; i++)
+	{
+		for (j = 0; j < 10; j++)
+		{
+			if (set2[i] == set1[j])
+			{
+				break;
+			}
+		}
+		if (j == 10)
+		{
+			set3[k] = set2[i];
+			k++;
+		}
+	}
+	cout << "\n\t union set3 = {";
+	for (i = 0; i < k; i++)
+	{
+		cout << set3[i] << ", ";
+	}
+	cout << "\b\b }";
+}
+
+void SetADT::intersection()
+{
+	int i, j, k = 0;
+	for (i = 0; i < 10; i++)
+	{
+		for (j = 0; j < 10; j++)
+		{
+			if (set1[i] == set2[j])
+			{
+				set3[k] = set1[i];
+				k++;
+				break;
+			}
+		}
+	}
+	cout << "\n\t Intersection set3 = {";
+	for (i = 0; i < k; i++)
+	{
+		if (set3[i] != -1)
+			cout << set3[i] << ", ";
+	}
+	cout << "\b\b }";
+}
+
+int main()
+{
+	SetADT obj;
+	int ch, index, s;
+	char ans;
+
+	while (1)
+	{
+		cout << "\n1. Add the data in set";
+		cout << "\n2. Remove";
+		cout << "\n3. Find";
+		cout << "\n4. Size";
+		cout << "\n5. intersection";
+		cout << "\n6. union";
+		cout << "\n7. Exit";
+		cout << "\nEnter your choice : ";
+		cin >> ch;
+
+		switch (ch)
+		{
+		case 1:
+			cout << "\n\t you want to add element in set 1 or 2:";
+			cin >> ch;
+			obj.add(ch);
+			break;
+		case 2:
+			cout << "\n\tenter a element you want to delete:";
+			cin >> ch;
+			cout << "\n\t you want to delete element in set 1 or 2:";
+			cin >> s;
+			index = obj.Delete(ch, s);
+			if (index == -1)
+			{
+				cout << "\n\telemrnt not found";
+			}
+			else
+			{
+				cout << "\n\t element" << ch << "deleted from location" << index + 1;
+				obj.display();
+			}
+			break;
+		case 3:
+			cout << "\n\t enter a element you want to search:";
+			cin >> ch;
+			cout << "\n\t you want to search element in set 1 or 2:";
+			cin >> s;
+			index = obj.find(ch, s);
+			if (index == -1)
+			{
+				cout << "\nelement not found";
+			}
+			else
+			{
+				cout << "\nelement" << ch << "found at location" << index + 1;
+			}
+			break;
+
+		case 4:
+			obj.display();
+			obj.size();
+			break;
+
+		case 5:
+			obj.intersection();
+			break;
+
+		case 6:
+			obj.Union();
+			break;
+
+		case 7:
+			exit(0);
+			break;
+		default:
+			cout << "\n\n unknown choice";
+		}
+	}
+	return 0;
+}
